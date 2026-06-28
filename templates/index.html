@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Predicción de Canal de Venta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffffff);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #004aad;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #004aad;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input:focus, select:focus {
+            border-color: #004aad;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,74,173,0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #004aad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #007bff;
+        }
+
+        .resultado {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .positivo {
+            background: #fdecea;
+            color: #b71c1c;
+            border: 1px solid #f5c6cb;
+        }
+
+        .negativo {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border: 1px solid #c3e6cb;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            padding: 15px 0;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            header h1 {
+                font-size: 1.5em;
+            }
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+            button {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Predicción de Canal de Venta — Calzado</h1>
+    </header>
+
+    <div class="container">
+        <h2>GRUPO 4 SISTEMAS INTELIGENTES Y MACHINE LEARNING — UPN 2026</h2>
+        <form method="post">
+            <label>Marca</label>
+            <select name="Brand">
+                <option value="Nike">Nike</option>
+                <option value="Adidas">Adidas</option>
+                <option value="Puma">Puma</option>
+                <option value="Reebok">Reebok</option>
+                <option value="Skechers">Skechers</option>
+                <option value="New Balance">New Balance</option>
+            </select>
+
+            <label>Tipo de calzado</label>
+            <select name="Shoe_Type">
+                <option value="Running">Running</option>
+                <option value="Casual">Casual</option>
+                <option value="Formal">Formal</option>
+                <option value="Sports">Sports</option>
+                <option value="Sneakers">Sneakers</option>
+                <option value="Boots">Boots</option>
+            </select>
+
+            <label>Color</label>
+            <select name="Color">
+                <option value="Black">Negro</option>
+                <option value="White">Blanco</option>
+                <option value="Blue">Azul</option>
+                <option value="Grey">Gris</option>
+                <option value="Green">Verde</option>
+                <option value="Red">Rojo</option>
+            </select>
+
+            <label>País</label>
+            <select name="Country">
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+                <option value="UAE">UAE</option>
+                <option value="France">France</option>
+                <option value="Saudi Arabia">Saudi Arabia</option>
+                <option value="India">India</option>
+                <option value="Germany">Germany</option>
+            </select>
+
+            <label>Precio (USD)</label>
+            <input type="number" step="0.01" name="Price_USD" value="{{ valores.Price_USD }}">
+
+            <label>Unidades vendidas</label>
+            <input type="number" name="Units_Sold" value="{{ valores.Units_Sold }}">
+
+            <label>Ingreso total (USD)</label>
+            <input type="number" step="0.01" name="Revenue_USD" value="{{ valores.Revenue_USD }}">
+
+            <button type="submit">Predecir Canal de Venta</button>
+        </form>
+
+        {% if resultado %}
+            <div class="resultado {% if '✅' in resultado %}negativo{% else %}positivo{% endif %}">
+                {{ resultado }}
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        © 2026 — Proyecto de IA UPN
+    </footer>
+</body>
+</html>
